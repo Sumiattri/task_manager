@@ -6,8 +6,8 @@
 const LOCAL_API_URL = 'http://localhost:3000';
 
 // For production - UPDATE THIS with your deployed backend URL
-// Example: const PRODUCTION_API_URL = 'https://your-app.onrender.com';
-const PRODUCTION_API_URL = 'http://localhost:3000'; // Change this to your production URL
+// Your Render backend URL
+const PRODUCTION_API_URL = 'https://task-manager-p1rj.onrender.com';
 
 // Auto-detect environment
 (function() {
