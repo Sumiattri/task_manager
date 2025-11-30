@@ -1,6 +1,13 @@
 // Use config from config.js if available, otherwise fallback
-const BASE_URL = window.BASE_URL || (window.location.port === '3000' ? '' : 'http://localhost:3000');
-const API_BASE_URL = window.API_BASE_URL || BASE_URL;
+// config.js sets window.BASE_URL and window.API_BASE_URL
+// Access via window properties to avoid redeclaration errors
+function getBaseUrl() {
+    return window.BASE_URL || (window.location.port === '3000' ? '' : 'http://localhost:3000');
+}
+
+function getApiBaseUrl() {
+    return window.API_BASE_URL || getBaseUrl();
+}
 
 function showRegister() {
     document.getElementById('loginForm').classList.add('hidden');
@@ -18,7 +25,7 @@ async function login() {
     const messageDiv = document.getElementById('message');
 
     try {
-        const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+        const response = await fetch(`${getApiBaseUrl()}/api/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
@@ -31,9 +38,9 @@ async function login() {
             localStorage.setItem('user', JSON.stringify(data.user));
             
             if (data.user.role === 'admin') {
-                window.location.href = `${BASE_URL}/admin.html`;
+                window.location.href = `${getBaseUrl()}/admin.html`;
             } else {
-                window.location.href = `${BASE_URL}/user.html`;
+                window.location.href = `${getBaseUrl()}/user.html`;
             }
         } else {
             messageDiv.textContent = data.message || 'Login failed';
@@ -53,7 +60,7 @@ async function register() {
     const messageDiv = document.getElementById('message');
 
     try {
-        const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
+        const response = await fetch(`${getApiBaseUrl()}/api/auth/register`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, email, password, role })
@@ -66,9 +73,9 @@ async function register() {
             localStorage.setItem('user', JSON.stringify(data.user));
             
             if (data.user.role === 'admin') {
-                window.location.href = `${BASE_URL}/admin.html`;
+                window.location.href = `${getBaseUrl()}/admin.html`;
             } else {
-                window.location.href = `${BASE_URL}/user.html`;
+                window.location.href = `${getBaseUrl()}/user.html`;
             }
         } else {
             messageDiv.textContent = data.message || 'Registration failed';
@@ -87,9 +94,9 @@ window.addEventListener('DOMContentLoaded', () => {
     
     if (token && user.role) {
         if (user.role === 'admin') {
-            window.location.href = `${BASE_URL}/admin.html`;
+            window.location.href = `${getBaseUrl()}/admin.html`;
         } else {
-            window.location.href = `${BASE_URL}/user.html`;
+            window.location.href = `${getBaseUrl()}/user.html`;
         }
     }
 });

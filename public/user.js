@@ -1,7 +1,11 @@
 let activeTimeLog = null;
 // Use config from config.js if available, otherwise fallback
-const BASE_URL = window.BASE_URL || (window.location.port === '3000' ? '' : 'http://localhost:3000');
-const API_BASE_URL = window.API_BASE_URL || BASE_URL;
+function getBaseUrl() {
+    return window.BASE_URL || (window.location.port === '3000' ? '' : 'http://localhost:3000');
+}
+function getApiBaseUrl() {
+    return window.API_BASE_URL || getBaseUrl();
+}
 
 // Check authentication
 window.addEventListener('DOMContentLoaded', () => {
@@ -9,7 +13,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     
     if (!token) {
-        window.location.href = `${BASE_URL}/index.html`;
+        window.location.href = `${getBaseUrl()}/index.html`;
         return;
     }
     
@@ -23,7 +27,7 @@ window.addEventListener('DOMContentLoaded', () => {
 function logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    window.location.href = `${BASE_URL}/index.html`;
+    window.location.href = `${getBaseUrl()}/index.html`;
 }
 
 function showTab(tab) {
@@ -50,7 +54,7 @@ function showTab(tab) {
 // Tasks
 async function loadTasks() {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/user/tasks`, {
+        const response = await fetch(`${getApiBaseUrl()}/api/user/tasks`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
         const tasks = await response.json();
@@ -109,7 +113,7 @@ async function loadTasks() {
 
 async function loadTasksForTimeTracking() {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/user/tasks`, {
+        const response = await fetch(`${getApiBaseUrl()}/api/user/tasks`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
         const tasks = await response.json();
@@ -130,7 +134,7 @@ async function loadTasksForTimeTracking() {
 
 async function loadCategories() {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/user/categories`, {
+        const response = await fetch(`${getApiBaseUrl()}/api/user/categories`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
         const categories = await response.json();
@@ -151,7 +155,7 @@ document.getElementById('taskForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     
     try {
-        const response = await fetch(`${API_BASE_URL}/api/user/tasks`, {
+        const response = await fetch(`${getApiBaseUrl()}/api/user/tasks`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -181,7 +185,7 @@ document.getElementById('taskForm').addEventListener('submit', async (e) => {
 
 async function updateTaskStatus(taskId, status) {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/user/tasks/${taskId}`, {
+        const response = await fetch(`${getApiBaseUrl()}/api/user/tasks/${taskId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -202,7 +206,7 @@ async function deleteTask(id) {
     if (!confirm('Are you sure you want to delete this task?')) return;
     
     try {
-        const response = await fetch(`${API_BASE_URL}/api/user/tasks/${id}`, {
+        const response = await fetch(`${getApiBaseUrl()}/api/user/tasks/${id}`, {
             method: 'DELETE',
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
@@ -227,7 +231,7 @@ document.getElementById('timeForm').addEventListener('submit', async (e) => {
     }
     
     try {
-        const response = await fetch(`${API_BASE_URL}/api/user/time-logs`, {
+        const response = await fetch(`${getApiBaseUrl()}/api/user/time-logs`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -256,7 +260,7 @@ document.getElementById('timeForm').addEventListener('submit', async (e) => {
 
 async function loadTimeLogs() {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/user/time-logs`, {
+        const response = await fetch(`${getApiBaseUrl()}/api/user/time-logs`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
         const timeLogs = await response.json();
@@ -296,7 +300,7 @@ async function loadTimeLogs() {
 
 async function stopTimeLog(id) {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/user/time-logs/${id}/stop`, {
+        const response = await fetch(`${getApiBaseUrl()}/api/user/time-logs/${id}/stop`, {
             method: 'PUT',
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
@@ -317,7 +321,7 @@ async function stopTimeLog(id) {
 // Progress Review
 async function loadProgress() {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/user/progress`, {
+        const response = await fetch(`${getApiBaseUrl()}/api/user/progress`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
         const data = await response.json();

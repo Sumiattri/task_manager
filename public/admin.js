@@ -1,7 +1,11 @@
 let statusChart, importanceChart;
 // Use config from config.js if available, otherwise fallback
-const BASE_URL = window.BASE_URL || (window.location.port === '3000' ? '' : 'http://localhost:3000');
-const API_BASE_URL = window.API_BASE_URL || BASE_URL;
+function getBaseUrl() {
+    return window.BASE_URL || (window.location.port === '3000' ? '' : 'http://localhost:3000');
+}
+function getApiBaseUrl() {
+    return window.API_BASE_URL || getBaseUrl();
+}
 
 // Check authentication
 window.addEventListener('DOMContentLoaded', () => {
@@ -9,7 +13,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     
     if (!token || user.role !== 'admin') {
-        window.location.href = `${BASE_URL}/index.html`;
+        window.location.href = `${getBaseUrl()}/index.html`;
         return;
     }
     
@@ -22,7 +26,7 @@ window.addEventListener('DOMContentLoaded', () => {
 function logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    window.location.href = `${BASE_URL}/index.html`;
+    window.location.href = `${getBaseUrl()}/index.html`;
 }
 
 function showTab(tab) {
@@ -47,7 +51,7 @@ function showTab(tab) {
 // Prioritization Rules
 async function loadRules() {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/admin/prioritization-rules`, {
+        const response = await fetch(`${getApiBaseUrl()}/api/admin/prioritization-rules`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
         const rule = await response.json();
@@ -70,7 +74,7 @@ document.getElementById('rulesForm').addEventListener('submit', async (e) => {
     const messageDiv = document.getElementById('rulesMessage');
     
     try {
-        const response = await fetch(`${API_BASE_URL}/api/admin/prioritization-rules`, {
+        const response = await fetch(`${getApiBaseUrl()}/api/admin/prioritization-rules`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -106,7 +110,7 @@ document.getElementById('rulesForm').addEventListener('submit', async (e) => {
 // Task Categories
 async function loadCategories() {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/admin/categories`, {
+        const response = await fetch(`${getApiBaseUrl()}/api/admin/categories`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
         const categories = await response.json();
@@ -134,7 +138,7 @@ document.getElementById('categoryForm').addEventListener('submit', async (e) => 
     e.preventDefault();
     
     try {
-        const response = await fetch(`${API_BASE_URL}/api/admin/categories`, {
+        const response = await fetch(`${getApiBaseUrl()}/api/admin/categories`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -163,7 +167,7 @@ async function deleteCategory(id) {
     if (!confirm('Are you sure you want to delete this category?')) return;
     
     try {
-        const response = await fetch(`${API_BASE_URL}/api/admin/categories/${id}`, {
+        const response = await fetch(`${getApiBaseUrl()}/api/admin/categories/${id}`, {
             method: 'DELETE',
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
@@ -181,7 +185,7 @@ async function deleteCategory(id) {
 // System Performance
 async function loadPerformance() {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/admin/performance`, {
+        const response = await fetch(`${getApiBaseUrl()}/api/admin/performance`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
         const data = await response.json();
