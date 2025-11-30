@@ -5,11 +5,13 @@ A full-stack web application for managing tasks, prioritizing them based on dead
 ## Features
 
 ### Admin Features
+
 - Configure prioritization rules (deadline weight, importance weight, importance levels)
 - Manage task categories
 - Monitor system performance with metrics and charts
 
 ### User Features
+
 - Set task priorities with deadlines and importance levels
 - Track time spent on tasks
 - Review task progress and statistics
@@ -24,6 +26,7 @@ A full-stack web application for managing tasks, prioritizing them based on dead
 ## Installation
 
 1. Install dependencies:
+
 ```bash
 npm install
 ```
@@ -31,6 +34,7 @@ npm install
 2. Make sure MongoDB is running on your system (default: `mongodb://localhost:27017`)
 
 3. Create a `.env` file (optional, defaults are set):
+
 ```
 PORT=3000
 MONGODB_URI=mongodb://localhost:27017/taskmanager
@@ -38,11 +42,13 @@ JWT_SECRET=your-secret-key-change-this-in-production
 ```
 
 4. Start the server:
+
 ```bash
 npm start
 ```
 
 For development with auto-reload:
+
 ```bash
 npm run dev
 ```
@@ -54,6 +60,7 @@ npm run dev
 1. **Register/Login**: Create an account or login. You can register as either a user or admin.
 
 2. **Admin Dashboard**:
+
    - Configure prioritization rules
    - Create and manage task categories
    - View system performance metrics
@@ -66,10 +73,12 @@ npm run dev
 ## API Endpoints
 
 ### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login user
+
+- `POST /api/auth/register` - Register new user.
+- `POST /api/auth/login` - Login user.
 
 ### Admin Routes (require admin role)
+
 - `GET /api/admin/prioritization-rules` - Get prioritization rules
 - `POST /api/admin/prioritization-rules` - Configure prioritization rules
 - `GET /api/admin/categories` - Get all categories
@@ -79,6 +88,7 @@ npm run dev
 - `GET /api/admin/performance` - Get system performance metrics
 
 ### User Routes
+
 - `GET /api/user/tasks` - Get user's tasks
 - `POST /api/user/tasks` - Create task
 - `PUT /api/user/tasks/:id` - Update task
@@ -100,4 +110,3 @@ task manager/
 ├── server.js        # Express server
 └── package.json     # Dependencies
 ```
-
